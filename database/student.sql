@@ -1,0 +1,11 @@
+CREATE DATABASE student;
+USE student;
+CREATE TABLE student_data
+( id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(200) NOT NULL,
+  college VARCHAR(150) NOT NULL,
+  course VARCHAR(100),
+  semester INT
+ );
