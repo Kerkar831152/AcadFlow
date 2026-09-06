@@ -1,9 +1,9 @@
-const db = require('../config/db');
+const db = require('../db');
 const registerSubject = (req, res) => {
     const { student_id,subject_name,subject_code} = req.body;
     const sql = `INSERT INTO subjects 
     (student_id, subject_name, subject_code) 
-    VALUES (?, ?, ?)`;
+    VALUES (?, ?, ?)`; 
     db.query(
         sql,
         [student_id, subject_name, subject_code],
@@ -41,12 +41,12 @@ const getSubjectsDetails= (req, res) => {
     );
 };
 const updateSubject= (req, res) => {
-    const {id, subject_name, subject_code} = req.body;
+    const {student_id, old_subject_name, subject_code,subject_name} = req.body;
     const sql = `UPDATE subjects
-    SET subject_name = ?, subject_code = ? WHERE id = ?`;
+    SET subject_name = ?, subject_code = ? WHERE student_id = ? AND subject_name = ?`;
     db.query(
         sql, 
-        [subject_name, subject_code,id],
+        [subject_name, subject_code, student_id, old_subject_name],
         (err, result) => {
             if (err) {
                 console.log(err);
