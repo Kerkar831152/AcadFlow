@@ -134,12 +134,68 @@ const filterassessments = (req, res) => {
         });
     });
 };
+const getassessmentsbydaterange = (req, res) => {
+    const{student_id,start_date,end_date}=req.body;
+    const sql=`SELECT * FROM assessments WHERE student_id=? AND due_date BETWEEN ? AND ? ORDER BY due_date ASC`;
+    db.query(sql,[student_id,start_date,end_date],(err,result)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({
+                message: 'Error occurred while fetching assessments by date range'});
+        }
+        res.status(200).json({data: result});
+    }
+    );
+};
+const getcalculaterequiredwork = (req, res) => {
+    const { student_id, start_date, end_date } = req.body;
+    const sql = `
+        SELECT
+            (
+                SELECT COALESCE(SUM(estimated_hours), 0)
+                FROM assessments
+                WHERE student_id = ?
+                AND due_date BETWEEN ? AND ?
+            ) AS total_estimated_hours,
+            (
+                SELECT study_hours_per_week
+                FROM student_availability
+                WHERE student_id = ?
+            ) AS study_hours_per_week
+    `;
 
+    db.query(
+        sql,
+        [student_id, start_date, end_date, student_id],
+        (err, result) => {
+
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: "Error occurred while calculating workload"
+                });
+            }
+            const required_work = result[0].total_estimated_hours || 0;
+            const study_capacity = result[0].study_hours_per_week || 0;
+            let workload_pressure = 0;
+            if (study_capacity > 0) {
+                workload_pressure = required_work / study_capacity;
+            }           
+            res.status(200).json({
+                total_estimated_hours: required_work,
+                study_hours_per_week: study_capacity,
+                workload_pressure: workload_pressure
+            });
+        }  
+    );
+};
 module.exports = {
     registerAssessment,
     getAssessmentsDetails,
     updateAssessment,
     deleteAssessment,
     getUpcomingAssessments,
-    filterassessments
+    filterassessments,
+    getassessmentsbydaterange,
+    getcalculaterequiredwork
 };
