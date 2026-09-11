@@ -7,7 +7,7 @@ const {
     ,deletecalendar
 }=require("../controllers/calendarcontroller");
 router.post("/register_calendar",registercalendar);
-router.get("/get_calendar",getcalendar);
+router.post("/get_calendar",getcalendar);
 router.patch("/update_calendar",updatecalendar);
 router.delete("/delete_calendar",deletecalendar);
 module.exports=router;

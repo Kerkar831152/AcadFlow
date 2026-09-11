@@ -7,7 +7,7 @@ const {
     deleteSubject
 }=require("../controllers/subjectscontroller");
 router.post("/register_subject", registerSubject);
-router.get("/details_subject", getSubjectsDetails);
+router.post("/details_subject", getSubjectsDetails);
 router.patch("/update_subject", updateSubject);
 router.delete("/delete_subject", deleteSubject);
 module.exports = router;

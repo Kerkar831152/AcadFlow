@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AcadFlow - Academic Workload Management
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <span>Acad</span>Flow
+        </div>
+
+
+        <nav>
+
+            <a href="#dashboard">
+                Dashboard
+            </a>
+
+            <a href="#assessments">
+                Assessments
+            </a>
+
+            <a href="#calendar">
+                Calendar
+            </a>
+
+            <a href="#subjects">
+                Subjects
+            </a>
+
+        </nav>
+
+
+        <button
+            class="profile-btn"
+            id="profile-btn"
+            type="button"
+        >
+            VK
+        </button>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- ================= HERO ================= -->
+
+        <section
+            class="hero"
+            id="dashboard"
+        >
+
+            <div>
+
+                <p class="welcome">
+                    ACADEMIC WORKLOAD MANAGEMENT
+                </p>
+
+
+                <h1>
+                    Academic workload,
+                    <br>
+                    <span>under control.</span>
+                </h1>
+
+
+                <p class="hero-text">
+
+                    Track your assessments, understand
+                    your academic workload and identify
+                    demanding periods before they become
+                    a problem.
+
+                </p>
+
+            </div>
+
+
+            <div class="current-week">
+
+                <p>
+                    Selected Period
+                </p>
+
+
+                <h2 id="selected-period">
+                    Loading...
+                </h2>
+
+
+                <span id="period-status">
+                    Loading...
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <p>
+                    Total Assessments
+                </p>
+
+                <h2 id="total-assessments">
+                    0
+                </h2>
+
+                <span>
+                    Currently stored
+                </span>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <p>
+                    Upcoming
+                </p>
+
+                <h2 id="upcoming-count">
+                    0
+                </h2>
+
+                <span>
+                    Future deadlines
+                </span>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚡
+                </div>
+
+                <p>
+                    Current Load
+                </p>
+
+                <h2 id="current-load">
+                    0%
+                </h2>
+
+                <span id="current-load-status">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🕒
+                </div>
+
+                <p>
+                    Study Capacity
+                </p>
+
+                <h2 id="study-capacity">
+                    0 hrs
+                </h2>
+
+                <span>
+                    Available study time
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- WORKLOAD -->
+
+            <div class="panel workload-panel">
+
+
+                <div class="panel-heading">
+
+
+                    <div>
+
+                        <p class="section-label">
+                            WORKLOAD ANALYSIS
+                        </p>
+
+                        <h2>
+                            Workload
+                        </h2>
+
+                    </div>
+
+
+                    <select id="workload-period">
+
+                        <option value="current">
+                            Current Week
+                        </option>
+
+                        <option value="next">
+                            Next Week
+                        </option>
+
+                        <option value="two-weeks">
+                            Next 2 Weeks
+                        </option>
+
+                        <option value="custom">
+                            Custom Range
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- CUSTOM RANGE -->
+
+                <div
+                    class="custom-range"
+                    id="custom-range"
+                >
+
+                    <div>
+
+                        <label for="custom-start-date">
+                            Start Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="custom-start-date"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="custom-end-date">
+                            End Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="custom-end-date"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LOAD -->
+
+                <div class="load-content">
+
+
+                    <div
+                        class="load-circle"
+                        id="load-circle"
+                    >
+
+                        <div>
+
+                            <strong id="load-percentage">
+                                0%
+                            </strong>
+
+                            <small>
+                                Load
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="load-info">
+
+
+                        <div class="load-status">
+
+                            <span
+                                class="status-dot"
+                                id="load-status-dot"
+                            >
+                            </span>
+
+
+                            <strong id="load-status">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <p id="load-description">
+                            Loading workload information...
+                        </p>
+
+
+
+                        <div class="capacity">
+
+
+                            <div class="capacity-title">
+
+                                <span id="required-hours">
+                                    0 hrs required
+                                </span>
+
+                                <span id="available-hours">
+                                    0 hrs available
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-fill"
+                                    id="workload-progress"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECOMMENDATION -->
+
+                <div class="recommendation">
+
+                    <strong>
+                        Recommendation
+                    </strong>
+
+                    <p id="recommendation-text">
+                        Loading recommendation...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- UPCOMING DEADLINES -->
+
+            <div class="panel deadlines-panel">
+
+
+                <div class="panel-heading">
+
+
+                    <div>
+
+                        <p class="section-label">
+                            UPCOMING
+                        </p>
+
+                        <h2>
+                            Deadlines
+                        </h2>
+
+                    </div>
+
+
+                    <a href="#assessments">
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div id="deadline-list">
+
+                    <!-- JavaScript inserts deadlines -->
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= WORKLOAD BY SUBJECT ================= -->
+
+        <section class="panel workload-breakdown">
+
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        ANALYSIS
+                    </p>
+
+                    <h2>
+                        Workload by Subject
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="subject-list"
+                id="workload-subject-list"
+            >
+
+                <!-- JavaScript inserts subject workload -->
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= ASSESSMENTS ================= -->
+
+        <section
+            class="content-section"
+            id="assessments"
+        >
+
+
+            <div class="section-title">
+
+
+                <div>
+
+                    <p class="section-label">
+                        ACADEMIC WORK
+                    </p>
+
+                    <h2>
+                        Assessments
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    id="add-assessment-btn"
+                    type="button"
+                >
+
+                    + Add Assessment
+
+                </button>
+
+
+            </div>
+
+
+            <div class="table-container">
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Assessment
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Due Date
+                            </th>
+
+                            <th>
+                                Difficulty
+                            </th>
+
+                            <th>
+                                Hours
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="assessment-list">
+
+                        <!-- JavaScript inserts assessments -->
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= CALENDAR ================= -->
+
+        <section
+            class="content-section"
+            id="calendar"
+        >
+
+
+            <div class="section-title">
+
+
+                <div>
+
+                    <p class="section-label">
+                        SCHEDULE
+                    </p>
+
+                    <h2>
+                        Academic Calendar
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="secondary-btn"
+                    id="add-calendar-btn"
+                    type="button"
+                >
+
+                    + Add Calendar Event
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                class="calendar-grid"
+                id="calendar-list"
+            >
+
+                <!-- JavaScript inserts calendar events -->
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= SUBJECTS ================= -->
+
+        <section
+            class="content-section"
+            id="subjects"
+        >
+
+
+            <div class="section-title">
+
+
+                <div>
+
+                    <p class="section-label">
+                        ACADEMICS
+                    </p>
+
+                    <h2>
+                        Subjects
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    id="add-subject-btn"
+                    type="button"
+                >
+
+                    + Add Subject
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                class="subject-cards"
+                id="subject-list"
+            >
+
+                <!-- JavaScript inserts subjects -->
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= ASSESSMENT MODAL ================= -->
+
+    <div
+        class="modal"
+        id="assessment-modal"
+        aria-hidden="true"
+    >
+
+
+        <div class="modal-box">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="section-label">
+                        NEW ENTRY
+                    </p>
+
+                    <h2>
+                        Add Assessment
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    id="close-assessment-modal"
+                >
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+
+            <form id="assessment-form">
+
+
+                <label for="assessment-title">
+
+                    Assessment Title
+
+                    <input
+                        type="text"
+                        id="assessment-title"
+                        placeholder="e.g. Database Assignment"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="assessment-subject">
+
+                    Subject
+
+                    <select
+                        id="assessment-subject"
+                        required
+                    >
+
+                        <option value="">
+                            Select subject
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+
+                <label for="assessment-type">
+
+                    Type
+
+                    <select
+                        id="assessment-type"
+                        required
+                    >
+
+                        <option value="">
+                            Select type
+                        </option>
+
+                        <option value="Assignment">
+                            Assignment
+                        </option>
+
+                        <option value="Exam">
+                            Exam
+                        </option>
+
+                        <option value="Quiz">
+                            Quiz
+                        </option>
+
+                        <option value="Project">
+                            Project
+                        </option>
+
+                        <option value="Presentation">
+                            Presentation
+                        </option>
+
+                        <option value="Practical">
+                            Practical
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+
+                <label for="assessment-date">
+
+                    Due Date
+
+                    <input
+                        type="date"
+                        id="assessment-date"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="assessment-weight">
+
+                    Weight (%)
+
+                    <input
+                        type="number"
+                        id="assessment-weight"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="15"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="assessment-difficulty">
+
+                    Difficulty (1-5)
+
+                    <input
+                        type="number"
+                        id="assessment-difficulty"
+                        min="1"
+                        max="5"
+                        placeholder="3"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="assessment-hours">
+
+                    Estimated Hours
+
+                    <input
+                        type="number"
+                        id="assessment-hours"
+                        min="0"
+                        step="0.5"
+                        placeholder="5"
+                        required
+                    >
+
+                </label>
+
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    Add Assessment
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= SUBJECT MODAL ================= -->
+
+    <div
+        class="modal"
+        id="subject-modal"
+        aria-hidden="true"
+    >
+
+
+        <div class="modal-box">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="section-label">
+                        NEW SUBJECT
+                    </p>
+
+                    <h2>
+                        Add Subject
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    id="close-subject-modal"
+                >
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+
+            <form id="subject-form">
+
+
+                <label for="subject-name">
+
+                    Subject Name
+
+                    <input
+                        type="text"
+                        id="subject-name"
+                        placeholder="e.g. Mathematics"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="subject-code">
+
+                    Subject Code
+
+                    <input
+                        type="text"
+                        id="subject-code"
+                        placeholder="e.g. MAT201"
+                        required
+                    >
+
+                </label>
+
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    Add Subject
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= CALENDAR MODAL ================= -->
+
+    <div
+        class="modal"
+        id="calendar-modal"
+        aria-hidden="true"
+    >
+
+
+        <div class="modal-box">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="section-label">
+                        NEW ENTRY
+                    </p>
+
+                    <h2>
+                        Add Calendar Event
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    id="close-calendar-modal"
+                >
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+
+            <form id="calendar-form">
+
+
+                <label for="calendar-date">
+
+                    Date
+
+                    <input
+                        type="date"
+                        id="calendar-date"
+                        required
+                    >
+
+                </label>
+
+
+
+                <label for="calendar-type">
+
+                    Day Type
+
+                    <select
+                        id="calendar-type"
+                        required
+                    >
+
+                        <option value="">
+                            Select type
+                        </option>
+
+                        <option value="college">
+                            College
+                        </option>
+
+                        <option value="holiday">
+                            Holiday
+                        </option>
+
+                        <option value="leave">
+                            Leave
+                        </option>
+
+                        <option value="exam">
+                            Exam
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+
+                <label for="calendar-description">
+
+                    Description
+
+                    <input
+                        type="text"
+                        id="calendar-description"
+                        placeholder="Optional"
+                    >
+
+                </label>
+
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    Add Calendar Event
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            AcadFlow — Academic Workload Management System
+        </p>
+
+
+        <span>
+            V1
+        </span>
+
+    </footer>
+
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

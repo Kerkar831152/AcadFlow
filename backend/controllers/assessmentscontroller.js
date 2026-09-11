@@ -149,6 +149,7 @@ const getassessmentsbydaterange = (req, res) => {
 };
 const getcalculaterequiredwork = (req, res) => {
     const { student_id, start_date, end_date } = req.body;
+
     const sql = `
         SELECT
             (
@@ -157,36 +158,82 @@ const getcalculaterequiredwork = (req, res) => {
                 WHERE student_id = ?
                 AND due_date BETWEEN ? AND ?
             ) AS total_estimated_hours,
+
             (
                 SELECT study_hours_per_week
                 FROM student_availability
                 WHERE student_id = ?
-            ) AS study_hours_per_week
+            ) AS study_hours_per_week,
+
+            (
+                SELECT COUNT(*)
+                FROM academic_calendar
+                WHERE student_id = ?
+                AND calendar_date BETWEEN ? AND ?
+                AND day_type IN ('holiday', 'leave')
+            ) AS extra_days
     `;
 
     db.query(
         sql,
-        [student_id, start_date, end_date, student_id],
+        [
+            student_id,
+            start_date,
+            end_date,
+            student_id,
+            student_id,
+            start_date,
+            end_date
+        ],
         (err, result) => {
-
             if (err) {
                 console.log(err);
                 return res.status(500).json({
-                    message: "Error occurred while calculating workload"
+                    message: "Error calculating calendar adjusted workload"
                 });
             }
-            const required_work = result[0].total_estimated_hours || 0;
-            const study_capacity = result[0].study_hours_per_week || 0;
+
+            const required_work = Number(result[0].total_estimated_hours) || 0;
+            const weekly_capacity = Number(result[0].study_hours_per_week) || 0;
+            const extra_days = Number(result[0].extra_days) || 0;
+
+            const extra_hours = extra_days * 2;
+            const adjusted_capacity = weekly_capacity + extra_hours;
+
             let workload_pressure = 0;
-            if (study_capacity > 0) {
-                workload_pressure = required_work / study_capacity;
-            }           
+
+            if (adjusted_capacity > 0) {
+                workload_pressure = required_work / adjusted_capacity;
+            }
+            let workload_status = "Normal";
+            if (workload_pressure >= 1) 
+            {
+                workload_status = "Overload";
+            }
+            else if (workload_pressure >= 0.7) 
+            {
+                workload_status = "High";
+            }
+            let recommendation = "";
+            if (workload_status === "Overload") {
+                recommendation = "High workload detected. Prioritize the nearest deadlines.";
+            }
+            else if (workload_status === "High") {
+                recommendation = "Consider starting the upcoming assessments early.";
+            }
+            else {
+                recommendation = "Workload is manageable.";
+            }
             res.status(200).json({
                 total_estimated_hours: required_work,
-                study_hours_per_week: study_capacity,
-                workload_pressure: workload_pressure
+                normal_study_hours: weekly_capacity,
+                extra_days: extra_days,
+                adjusted_study_hours: adjusted_capacity,
+                workload_pressure: workload_pressure,
+                workload_status:workload_status,
+                recommendation:recommendation
             });
-        }  
+        }
     );
 };
 module.exports = {

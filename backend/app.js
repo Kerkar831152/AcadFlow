@@ -5,7 +5,8 @@ const assessRoutes = require("./routes/assessmentroutes");
 const availabilityroutes=require("./routes/availabilityroutes");
 const calendarroutes=require("./routes/calendarroutes");    
 const app = express();
-
+const cors = require("cors");
+app.use(cors()); 
 app.use(express.json());
 app.use("/api", subjectRoutes);
 app.use("/api", studentRoutes);
