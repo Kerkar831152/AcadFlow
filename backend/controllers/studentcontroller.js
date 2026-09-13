@@ -1,5 +1,6 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const registerStudent = async (req, res) => {
     const { name, email, password, college, course, semester } = req.body;
 
@@ -27,20 +28,65 @@ const registerStudent = async (req, res) => {
     );
 };
 
-const getStudentDetails = (req, res) => {
-    const { name } = req.body;
+const loginUser = async (req,res) => {
+    const {email,password} = req.body;
 
-    const sql = "SELECT * FROM student_data WHERE name = ?";
+    const sql = `SELECT * FROM student_data WHERE email=?`;
 
-    db.query(sql, [name], (err, result) => {
-        if (err) {
+    db.query(sql,[email],async (err,result) => {
+        if(err){
             console.log(err);
             return res.status(500).json({
-                message: "Error retrieving student details"
+                message:"Login failed"
             });
         }
 
-        res.status(200).json(result);
+        if(result.length === 0){
+            return res.status(401).json({
+                message:"Invalid email or password"
+            });
+        }
+
+        const user = result[0];
+
+        const passwordMatch = await bcrypt.compare(
+            password,
+            user.password
+        );
+
+        if(!passwordMatch){
+            return res.status(401).json({
+                message:"Invalid email or password"
+            });
+        }
+        const token = jwt.sign({
+            student_id:user.id},
+            process.env.JWT_SECRET,
+            {expiresIn:"1d"}
+        );
+        res.status(200).json({
+            message:"Login successful",
+            token:token
+        });
+    });
+};
+
+const getStudentDetails = (req,res) => {
+    const student_id = req.student_id;
+
+    const sql = "SELECT * FROM student_data WHERE id = ?";
+
+    db.query(sql,[student_id],(err,result) => {
+        if(err){
+            console.log(err);
+            return res.status(500).json({
+                message:"Error retrieving student details"
+            });
+        }
+
+        res.status(200).json({
+            data:result
+        });
     });
 };
 
@@ -96,5 +142,6 @@ module.exports = {
     registerStudent,
     getStudentDetails,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    loginUser
 };

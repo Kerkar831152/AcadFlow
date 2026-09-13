@@ -24,37 +24,50 @@
         Firebase Google Authentication will use this later.
     -->
 
-    <section id="auth-screen" class="auth-screen hidden">
-
+    <section id="auth-screen " class="auth-screen hidden">
         <div class="auth-card">
-
             <div class="brand-mark">A</div>
-
             <h1>AcadFlow</h1>
-
+            
             <p class="auth-subtitle">
                 Academic Workload Management
             </p>
 
             <p class="auth-description">
-                Organize your academic work, track assessments,
-                manage your schedule and understand your workload.
+                Login as a guest to manage your academic workload.
             </p>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">
+                        Email
+                    </label>
+                    
+                    <input
+                    id="login-email"
+                    type="email"
+                    placeholder="Enter your email"
+                    required>
+                </div>
+                
+                <div class="form-group">
+                <label for="login-password">
+                    Password
+                </label>
 
-            <button id="google-login-btn" class="google-btn" type="button">
-
-                <span class="google-icon">G</span>
-
-                <span>Continue with Google</span>
-
-            </button>
-
-            <p class="auth-note">
-                Sign in securely using your Google account.
-            </p>
-
+                <input
+                    id="login-password"
+                    type="password"
+                    placeholder="Enter your password"
+                    required>
+                </div>
+                <button
+                type="submit"
+                class="primary-btn">
+                Login
+                </button>
+            </form>
         </div>
-
     </section>
 
 
@@ -158,7 +171,7 @@
                     </p>
 
                     <h1>
-                        Welcome back,
+                        Welcome,
                         <span id="welcome-name">
                             Student
                         </span>
@@ -584,15 +597,15 @@
                                 </th>
 
                                 <th>
+                                    Weight
+                                </th>
+
+                                <th>
                                     Difficulty
                                 </th>
 
                                 <th>
                                     Hours
-                                </th>
-
-                                <th>
-                                    Actions
                                 </th>
 
                             </tr>

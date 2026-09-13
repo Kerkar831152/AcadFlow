@@ -20,7 +20,9 @@ const getAvailability=(req,res)=>{
             return res.status(500).json({
                 message: 'Error occurred while fetching availability'});
         }
-        res.status(200).json({data: result});
+        res.status(200).json({
+            data: result
+        });
     });
 };
 const updateAvailability=(req,res)=>{

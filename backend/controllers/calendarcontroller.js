@@ -20,13 +20,15 @@ const getcalendar=(req,res)=>{
             return res.status(500).json({
                 message: 'Error occurred while fetching calender'});
         }
-        res.status(200).json({data: result});
+        res.status(200).json({
+            data: result
+        });
     });
 };
 const updatecalendar=(req,res)=>{
-    const {student_id,calendar_date,day_type,description}=req.body;
+    const {student_id,calendar_date,day_type,description,old_calender_date}=req.body;
     const sql=`UPDATE academic_calendar SET calendar_date=?,day_type=?,description=? WHERE student_id=? AND calendar_date=?`;
-    db.query(sql,[calendar_date,day_type,description,student_id,calendar_date],(err,result)=>{
+    db.query(sql,[calendar_date,day_type,description,student_id,old_calender_date],(err,result)=>{
         if(err){
             console.log(err);
             return res.status(500).json({

@@ -1,16 +1,18 @@
 const express = require("express");
 
 const router = express.Router();
-
+const authMiddleware = require("../middleware/authMiddleware");
 const {
     registerStudent,
     getStudentDetails,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    loginUser
 } = require("../controllers/studentcontroller");
 
 router.post("/register", registerStudent);
-router.get("/details", getStudentDetails);
+router.post("/login",loginUser);
+router.post("/details",authMiddleware,getStudentDetails);
 router.patch("/update", updateStudent);
 router.delete("/delete", deleteStudent);
 
