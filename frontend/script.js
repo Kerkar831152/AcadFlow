@@ -1,5 +1,14 @@
 const API_BASE = "http://localhost:3000/api";
-const STUDENT_ID = 1;
+const authScreen = document.getElementById("auth-screen");
+const appScreen = document.getElementById("app-screen");
+
+const authChoice = document.getElementById("auth-choice");
+const existingAccountButton = document.getElementById("existing-account-btn");
+const newAccountButton = document.getElementById("new-account-btn");
+const backToChoiceButton = document.getElementById("back-to-choice-btn");
+const backToChoiceRegisterButton = document.getElementById("back-to-choice-register-btn");
+const registerForm = document.getElementById("register-form");
+
 let subjects = [];
 let assessments = [];
 let calendarEvents = [];
@@ -61,7 +70,14 @@ async function apiRequest(url, options = {}) {
     const response = await fetch(API_BASE + url, options);
 
     if (!response.ok) {
-        throw new Error("Request failed");
+        const error = await response.json();
+        console.log(error);
+
+        if(response.status === 401) {
+            localStorage.removeItem("token");
+        }
+
+        throw new Error(error.message);
     }
 
     return await response.json();
@@ -111,13 +127,7 @@ function getLocalDate(dateValue) {
 
 async function loadSubjects() {
     const data = await apiRequest("/details_subject", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: STUDENT_ID
-        })
+        method: "POST"
     });
 
     subjects = data.data;
@@ -179,11 +189,7 @@ subjectForm.addEventListener("submit", async function(event) {
 
     await apiRequest("/register_subject", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
         body: JSON.stringify({
-            student_id: STUDENT_ID,
             subject_name: subjectName.value,
             subject_code: subjectCode.value
         })
@@ -212,11 +218,7 @@ async function loadassessments() {
     for (const subject of subjects) {
         const data = await apiRequest("/details_assessment", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify({
-                student_id: STUDENT_ID,
                 subject_id: subject.id
             })
         });
@@ -256,13 +258,7 @@ function displayassessments(list) {
 
 async function loadAvailability() {
     const data = await apiRequest("/get_availability", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: STUDENT_ID
-        })
+        method: "POST"
     });
 
     if (data.data.length > 0) {
@@ -362,7 +358,7 @@ function applyFilters() {
         const todayDate = formatDate(today);
 
         filteredAssessments = filteredAssessments.filter(function(assessment) {
-            return assessment.due_date >= todayDate;
+            return String(assessment.due_date).slice(0, 10) >= todayDate;
         });
     }
     else if (selectedRange === "week") {
@@ -379,8 +375,10 @@ function applyFilters() {
         const sundayDate = formatDate(sunday);
 
         filteredAssessments = filteredAssessments.filter(function(assessment) {
-            return assessment.due_date >= mondayDate &&
-                   assessment.due_date <= sundayDate;
+            const dueDate = String(assessment.due_date).slice(0, 10);
+
+            return dueDate >= mondayDate &&
+                   dueDate <= sundayDate;
         });
     }
 
@@ -408,11 +406,7 @@ assessmentForm.addEventListener("submit", async function(event) {
 
     await apiRequest("/register_assessment", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
         body: JSON.stringify({
-            student_id: STUDENT_ID,
             subject_id: Number(assessmentsubject.value),
             title: title.value,
             type: type.value,
@@ -464,7 +458,7 @@ function displayCalendar() {
             const eventDate = formatDate(event.calendar_date);
 
             if (eventDate === fullDate) {
-                eventHTML = `
+                eventHTML += `
                     <div class="calendar-event ${event.day_type}">
                         ${event.description}
                     </div>
@@ -497,13 +491,7 @@ function displayCalendar() {
 
 async function loadCalendarEvents() {
     const data = await apiRequest("/get_calendar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: STUDENT_ID
-        })
+        method: "POST"
     });
 
     calendarEvents = data.data;
@@ -521,11 +509,7 @@ calendarForm.addEventListener("submit", async function(event) {
 
     await apiRequest("/register_calendar", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
         body: JSON.stringify({
-            student_id: STUDENT_ID,
             calendar_date: calendarDate.value,
             day_type: calendarType.value,
             description: calendarDescription.value
@@ -570,13 +554,7 @@ saveAvailabilityButton.addEventListener("click", async function() {
     const studyHoursValue = Number(studyHours.value);
 
     const data = await apiRequest("/get_availability", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: STUDENT_ID
-        })
+        method: "POST"
     });
 
     let message = "";
@@ -584,11 +562,7 @@ saveAvailabilityButton.addEventListener("click", async function() {
     if (data.data.length === 0) {
         await apiRequest("/register_availability", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify({
-                student_id: STUDENT_ID,
                 working_days: workingDaysValue,
                 college_hours_per_day: collegeHoursValue,
                 study_hours_per_week: studyHoursValue
@@ -600,11 +574,7 @@ saveAvailabilityButton.addEventListener("click", async function() {
     else {
         await apiRequest("/update_availability", {
             method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify({
-                student_id: STUDENT_ID,
                 working_days: workingDaysValue,
                 college_hours_per_day: collegeHoursValue,
                 study_hours_per_week: studyHoursValue
@@ -635,14 +605,160 @@ async function displaystudentdata() {
 
     document.getElementById("welcome-name").textContent = student.name;
     document.getElementById("nav-student-name").textContent = student.name;
-};
+}
+
+existingAccountButton.addEventListener("click", function() {
+    authChoice.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+});
+
+newAccountButton.addEventListener("click", function() {
+    authChoice.classList.add("hidden");
+    registerForm.classList.remove("hidden");
+});
+
+backToChoiceButton.addEventListener("click", function() {
+    loginForm.classList.add("hidden");
+    authChoice.classList.remove("hidden");
+});
+
+backToChoiceRegisterButton.addEventListener("click", function() {
+    registerForm.classList.add("hidden");
+    authChoice.classList.remove("hidden");
+});
+
+const loginForm = document.getElementById("login-form");
+
+loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("login-email");
+    const password = document.getElementById("login-password");
+
+    try {
+        const data = await apiRequest("/login", {
+            method: "POST",
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value
+            })
+        });
+
+        localStorage.setItem("token", data.token);
+
+        alert("Login successful");
+
+        authScreen.classList.add("hidden");
+        appScreen.classList.remove("hidden");
+
+        await startApp();
+
+        loginForm.reset();
+    }
+    catch(error) {
+        alert(error.message);
+    }
+});
+
+registerForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("register-name");
+    const email = document.getElementById("register-email");
+    const password = document.getElementById("register-password");
+    const college = document.getElementById("register-college");
+    const course = document.getElementById("register-course");
+    const semester = document.getElementById("register-semester");
+
+    try {
+        await apiRequest("/register", {
+            method: "POST",
+            body: JSON.stringify({
+                name: name.value,
+                email: email.value,
+                password: password.value,
+                college: college.value,
+                course: course.value,
+                semester: semester.value
+            })
+        });
+
+        alert("Account created successfully. Please login.");
+
+        registerForm.reset();
+
+        registerForm.classList.add("hidden");
+        authChoice.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+
+        document.getElementById("login-email").value =
+            email.value;
+    }
+    catch(error) {
+        alert(error.message);
+    }
+});
+
+const logoutButton =
+    document.getElementById("logout-btn");
+
+logoutButton.addEventListener("click", function() {
+
+    const confirmLogout =
+        confirm("Are you sure you want to sign out?");
+
+    if(!confirmLogout) {
+        return;
+    }
+
+    localStorage.removeItem("token");
+
+    authScreen.classList.remove("hidden");
+    appScreen.classList.add("hidden");
+
+    authChoice.classList.remove("hidden");
+    loginForm.classList.add("hidden");
+    registerForm.classList.add("hidden");
+
+    loginForm.reset();
+    registerForm.reset();
+
+    alert("Signed out successfully");
+});
 
 async function startApp() {
+    await displaystudentdata();
     await loadSubjects();
     await loadassessments();
     await loadCalendarEvents();
     await loadAvailability();
-    await displaystudentdata();
     calculateWorkload();
 }
-startApp();
+
+const token = localStorage.getItem("token");
+
+if(token) {
+    authScreen.classList.add("hidden");
+    appScreen.classList.remove("hidden");
+
+    startApp().catch(function(error) {
+        console.log(error);
+
+        localStorage.removeItem("token");
+
+        authScreen.classList.remove("hidden");
+        appScreen.classList.add("hidden");
+
+        authChoice.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+        registerForm.classList.add("hidden");
+    });
+}
+else {
+    authScreen.classList.remove("hidden");
+    appScreen.classList.add("hidden");
+
+    authChoice.classList.remove("hidden");
+    loginForm.classList.add("hidden");
+    registerForm.classList.add("hidden");
+}

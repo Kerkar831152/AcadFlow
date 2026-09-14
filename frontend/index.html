@@ -1,16 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>AcadFlow</title>
-
     <link rel="stylesheet" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -18,67 +15,202 @@
 
 <body>
 
-    <!--
-        AUTHENTICATION SCREEN
-        Hidden for now.
-        Firebase Google Authentication will use this later.
-    -->
+    <section id="auth-screen" class="auth-screen ">
 
-    <section id="auth-screen " class="auth-screen hidden">
         <div class="auth-card">
-            <div class="brand-mark">A</div>
-            <h1>AcadFlow</h1>
-            
+
+            <div class="brand-mark">
+                A
+            </div>
+
+            <h1>
+                AcadFlow
+            </h1>
+
             <p class="auth-subtitle">
                 Academic Workload Management
             </p>
 
-            <p class="auth-description">
-                Login as a guest to manage your academic workload.
-            </p>
-            
-            <form id="login-form">
+            <div id="auth-choice">
+
+                <p class="auth-description">
+                    Do you already have an account?
+                </p>
+
+                <button
+                    id="existing-account-btn"
+                    type="button"
+                    class="primary-btn">
+                    Login
+                </button>
+
+                <button
+                    id="new-account-btn"
+                    type="button"
+                    class="secondary-btn">
+                    Create Account
+                </button>
+
+            </div>
+
+            <form id="login-form" class="hidden">
+
+                <p class="auth-description">
+                    Login to manage your academic workload.
+                </p>
+
                 <div class="form-group">
+
                     <label for="login-email">
                         Email
                     </label>
-                    
-                    <input
-                    id="login-email"
-                    type="email"
-                    placeholder="Enter your email"
-                    required>
-                </div>
-                
-                <div class="form-group">
-                <label for="login-password">
-                    Password
-                </label>
 
-                <input
-                    id="login-password"
-                    type="password"
-                    placeholder="Enter your password"
-                    required>
+                    <input
+                        id="login-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        required>
+
                 </div>
+
+                <div class="form-group">
+
+                    <label for="login-password">
+                        Password
+                    </label>
+
+                    <input
+                        id="login-password"
+                        type="password"
+                        placeholder="Enter your password"
+                        required>
+
+                </div>
+
                 <button
-                type="submit"
-                class="primary-btn">
-                Login
+                    type="submit"
+                    class="primary-btn">
+                    Login
                 </button>
+
+                <button
+                    id="back-to-choice-btn"
+                    type="button"
+                    class="secondary-btn">
+                    Back
+                </button>
+
             </form>
+
+            <form id="register-form" class="hidden">
+
+                <p class="auth-description">
+                    Create your AcadFlow student account.
+                </p>
+
+                <div class="form-group">
+
+                    <label for="register-name">
+                        Name
+                    </label>
+
+                    <input
+                        id="register-name"
+                        type="text"
+                        placeholder="Enter your name"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="register-email">
+                        Email
+                    </label>
+
+                    <input
+                        id="register-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="register-password">
+                        Password
+                    </label>
+
+                    <input
+                        id="register-password"
+                        type="password"
+                        placeholder="Create a password"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="register-college">
+                        College
+                    </label>
+
+                    <input
+                        id="register-college"
+                        type="text"
+                        placeholder="Enter your college"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="register-course">
+                        Course
+                    </label>
+
+                    <input
+                        id="register-course"
+                        type="text"
+                        placeholder="Enter your course">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="register-semester">
+                        Semester
+                    </label>
+
+                    <input
+                        id="register-semester"
+                        type="number"
+                        min="1"
+                        placeholder="Enter your semester">
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Create Account
+                </button>
+
+                <button
+                    id="back-to-choice-register-btn"
+                    type="button"
+                    class="secondary-btn">
+                    Back
+                </button>
+
+            </form>
+
         </div>
+
     </section>
 
-
-    <!--
-        MAIN APPLICATION
-        Visible by default so we can design and test the dashboard.
-    -->
-
-    <section id="app-screen" class="app-screen">
-
-        <!-- ================= NAVBAR ================= -->
+    <section id="app-screen" class="app-screen hidden">
 
         <header class="navbar">
 
@@ -90,7 +222,9 @@
 
                 <div class="brand-text">
 
-                    <h2>AcadFlow</h2>
+                    <h2>
+                        AcadFlow
+                    </h2>
 
                     <span>
                         Academic Workload Management
@@ -100,10 +234,11 @@
 
             </div>
 
-
             <nav class="nav-links">
 
-                <a href="#dashboard" class="active">
+                <a
+                    href="#dashboard"
+                    class="active">
                     Dashboard
                 </a>
 
@@ -121,12 +256,13 @@
 
             </nav>
 
-
             <div class="nav-right">
 
                 <div class="account-preview">
 
-                    <div id="nav-avatar" class="small-avatar">
+                    <div
+                        id="nav-avatar"
+                        class="small-avatar">
                         S
                     </div>
 
@@ -155,12 +291,7 @@
 
         </header>
 
-
-        <!-- ================= DASHBOARD ================= -->
-
         <main id="dashboard" class="dashboard">
-
-            <!-- ================= WELCOME ================= -->
 
             <section class="welcome-section">
 
@@ -183,7 +314,6 @@
 
                 </div>
 
-
                 <div class="today-card">
 
                     <span>
@@ -197,9 +327,6 @@
                 </div>
 
             </section>
-
-
-            <!-- ================= PROFILE ================= -->
 
             <section class="dashboard-section">
 
@@ -219,7 +346,6 @@
 
                 </div>
 
-
                 <div class="profile-card">
 
                     <div
@@ -227,7 +353,6 @@
                         class="profile-avatar">
                         S
                     </div>
-
 
                     <div class="profile-content">
 
@@ -243,7 +368,6 @@
 
                         </div>
 
-
                         <div class="profile-info">
 
                             <div class="info-item">
@@ -258,7 +382,6 @@
 
                             </div>
 
-
                             <div class="info-item">
 
                                 <span>
@@ -270,7 +393,6 @@
                                 </strong>
 
                             </div>
-
 
                             <div class="info-item">
 
@@ -292,9 +414,6 @@
 
             </section>
 
-
-            <!-- ================= WORKLOAD SUMMARY ================= -->
-
             <section class="dashboard-section">
 
                 <div class="section-heading">
@@ -312,7 +431,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="summary-grid">
 
@@ -336,7 +454,6 @@
 
                     </div>
 
-
                     <div class="summary-card">
 
                         <div class="summary-icon">
@@ -357,7 +474,6 @@
 
                     </div>
 
-
                     <div class="summary-card">
 
                         <div class="summary-icon">
@@ -377,7 +493,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="summary-card workload-summary">
 
@@ -403,9 +518,6 @@
 
             </section>
 
-
-            <!-- ================= SUBJECTS ================= -->
-
             <section
                 id="subjects-section"
                 class="dashboard-section">
@@ -428,7 +540,6 @@
 
                     </div>
 
-
                     <button
                         id="add-subject-btn"
                         class="primary-btn"
@@ -440,7 +551,6 @@
                     </button>
 
                 </div>
-
 
                 <div class="table-card">
 
@@ -462,12 +572,11 @@
 
                         </thead>
 
-
                         <tbody id="subject-list">
 
                             <tr class="empty-row">
 
-                                <td colspan="3">
+                                <td colspan="2">
 
                                     No subjects added yet.
 
@@ -482,9 +591,6 @@
                 </div>
 
             </section>
-
-
-            <!-- ================= ASSESSMENTS ================= -->
 
             <section
                 id="assessments-section"
@@ -508,7 +614,6 @@
 
                     </div>
 
-
                     <button
                         id="add-assessment-btn"
                         class="primary-btn"
@@ -520,7 +625,6 @@
                     </button>
 
                 </div>
-
 
                 <div class="filter-bar">
 
@@ -552,7 +656,6 @@
 
                     </select>
 
-
                     <select id="assessment-range">
 
                         <option value="all">
@@ -570,7 +673,6 @@
                     </select>
 
                 </div>
-
 
                 <div class="table-card">
 
@@ -612,7 +714,6 @@
 
                         </thead>
 
-
                         <tbody id="assessment-list">
 
                             <tr class="empty-row">
@@ -632,9 +733,6 @@
                 </div>
 
             </section>
-
-
-            <!-- ================= CALENDAR ================= -->
 
             <section
                 id="calendar-section"
@@ -658,7 +756,6 @@
 
                     </div>
 
-
                     <button
                         id="add-calendar-btn"
                         class="secondary-btn"
@@ -671,7 +768,6 @@
 
                 </div>
 
-
                 <div class="calendar-container">
 
                     <div class="calendar-header">
@@ -682,7 +778,6 @@
                             type="button">
                             ‹
                         </button>
-
 
                         <div class="calendar-title">
 
@@ -696,7 +791,6 @@
 
                         </div>
 
-
                         <button
                             id="next-month"
                             class="calendar-nav-btn"
@@ -705,7 +799,6 @@
                         </button>
 
                     </div>
-
 
                     <div class="calendar-weekdays">
 
@@ -719,17 +812,13 @@
 
                     </div>
 
-
                     <div
                         id="calendar-grid"
                         class="calendar-grid">
 
-                        <!-- JavaScript creates calendar days here -->
-
                     </div>
 
                 </div>
-
 
                 <div class="calendar-legend">
 
@@ -757,9 +846,6 @@
 
             </section>
 
-
-            <!-- ================= WEEKLY AVAILABILITY ================= -->
-
             <section class="dashboard-section">
 
                 <div class="section-heading">
@@ -783,7 +869,6 @@
 
                 </div>
 
-
                 <div class="availability-card">
 
                     <div class="availability-field">
@@ -805,7 +890,6 @@
 
                     </div>
 
-
                     <div class="availability-field">
 
                         <label for="college-hours">
@@ -824,7 +908,6 @@
                             value="7">
 
                     </div>
-
 
                     <div class="availability-field">
 
@@ -845,7 +928,6 @@
 
                     </div>
 
-
                     <button
                         id="save-availability"
                         class="primary-btn availability-btn"
@@ -858,9 +940,6 @@
                 </div>
 
             </section>
-
-
-            <!-- ================= WORKLOAD ANALYSIS ================= -->
 
             <section class="dashboard-section">
 
@@ -882,7 +961,6 @@
 
                     </div>
 
-
                     <button
                         id="calculate-workload"
                         class="primary-btn"
@@ -893,7 +971,6 @@
                     </button>
 
                 </div>
-
 
                 <div class="workload-card">
 
@@ -915,7 +992,6 @@
 
                     </div>
 
-
                     <div class="workload-information">
 
                         <span class="result-label">
@@ -931,7 +1007,6 @@
                             your upcoming academic commitments are
                             within your available capacity.
                         </p>
-
 
                         <div class="workload-indicator">
 
@@ -953,9 +1028,6 @@
 
     </section>
 
-
-    <!-- ================= SUBJECT MODAL ================= -->
-
     <div
         id="subject-modal"
         class="modal hidden">
@@ -976,7 +1048,6 @@
 
                 </div>
 
-
                 <button
                     class="close-modal"
                     data-close="subject-modal"
@@ -985,7 +1056,6 @@
                 </button>
 
             </div>
-
 
             <form id="subject-form">
 
@@ -1003,7 +1073,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                     <label for="subject-code">
@@ -1017,7 +1086,6 @@
                         required>
 
                 </div>
-
 
                 <div class="modal-actions">
 
@@ -1042,9 +1110,6 @@
 
     </div>
 
-
-    <!-- ================= ASSESSMENT MODAL ================= -->
-
     <div
         id="assessment-modal"
         class="modal hidden">
@@ -1065,7 +1130,6 @@
 
                 </div>
 
-
                 <button
                     class="close-modal"
                     data-close="assessment-modal"
@@ -1074,7 +1138,6 @@
                 </button>
 
             </div>
-
 
             <form id="assessment-form">
 
@@ -1094,7 +1157,6 @@
 
                     </div>
 
-
                     <div class="form-group">
 
                         <label for="assessment-subject">
@@ -1112,7 +1174,6 @@
                         </select>
 
                     </div>
-
 
                     <div class="form-group">
 
@@ -1152,7 +1213,6 @@
 
                     </div>
 
-
                     <div class="form-group">
 
                         <label for="assessment-date">
@@ -1165,7 +1225,6 @@
                             required>
 
                     </div>
-
 
                     <div class="form-group">
 
@@ -1182,7 +1241,6 @@
                             placeholder="20">
 
                     </div>
-
 
                     <div class="form-group">
 
@@ -1216,7 +1274,6 @@
 
                     </div>
 
-
                     <div class="form-group">
 
                         <label for="assessment-hours">
@@ -1233,7 +1290,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="modal-actions">
 
@@ -1258,9 +1314,6 @@
 
     </div>
 
-
-    <!-- ================= CALENDAR MODAL ================= -->
-
     <div
         id="calendar-modal"
         class="modal hidden">
@@ -1281,7 +1334,6 @@
 
                 </div>
 
-
                 <button
                     class="close-modal"
                     data-close="calendar-modal"
@@ -1290,7 +1342,6 @@
                 </button>
 
             </div>
-
 
             <form id="calendar-form">
 
@@ -1306,7 +1357,6 @@
                         required>
 
                 </div>
-
 
                 <div class="form-group">
 
@@ -1338,7 +1388,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                     <label for="calendar-description">
@@ -1351,7 +1400,6 @@
                         placeholder="e.g. College holiday">
 
                 </div>
-
 
                 <div class="modal-actions">
 
@@ -1376,8 +1424,8 @@
 
     </div>
 
-
     <script src="script.js"></script>
 
 </body>
 </html>
+

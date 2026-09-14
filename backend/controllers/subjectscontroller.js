@@ -1,6 +1,7 @@
 const db = require('../db');
 const registerSubject = (req, res) => {
-    const { student_id,subject_name,subject_code} = req.body;
+    const {subject_name,subject_code} = req.body;
+    const student_id=req.student_id;
     const sql = `INSERT INTO subjects 
     (student_id, subject_name, subject_code) 
     VALUES (?, ?, ?)`; 
@@ -21,7 +22,7 @@ const registerSubject = (req, res) => {
     );
 };
 const getSubjectsDetails= (req, res) => {
-    const { student_id} = req.body;
+    const student_id = req.student_id;
     const sql = `SELECT * FROM subjects WHERE student_id = ?`;
     db.query(
         sql,

@@ -65,7 +65,7 @@ button {
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 .auth-screen {
