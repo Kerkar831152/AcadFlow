@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = "https://acad-flow-tau.vercel.app/api";
 
 const authScreen = document.getElementById("auth-screen");
 const appScreen = document.getElementById("app-screen");
