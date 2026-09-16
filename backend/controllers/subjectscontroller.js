@@ -1,10 +1,13 @@
 const db = require('../db');
+
 const registerSubject = (req, res) => {
-    const {subject_name,subject_code} = req.body;
-    const student_id=req.student_id;
-    const sql = `INSERT INTO subjects 
-    (student_id, subject_name, subject_code) 
-    VALUES (?, ?, ?)`; 
+    const {subject_name, subject_code} = req.body;
+    const student_id = req.student_id;
+
+    const sql = `INSERT INTO subjects
+    (student_id, subject_name, subject_code)
+    VALUES (?, ?, ?)`;
+
     db.query(
         sql,
         [student_id, subject_name, subject_code],
@@ -15,15 +18,19 @@ const registerSubject = (req, res) => {
                     message: "Subject Registration Failed"
                 });
             }
+
             res.status(201).json({
                 message: "Subject added successfully"
             });
         }
     );
 };
-const getSubjectsDetails= (req, res) => {
+
+const getSubjectsDetails = (req, res) => {
     const student_id = req.student_id;
+
     const sql = `SELECT * FROM subjects WHERE student_id = ?`;
+
     db.query(
         sql,
         [student_id],
@@ -34,6 +41,7 @@ const getSubjectsDetails= (req, res) => {
                     message: "Subject Retrieval Failed"
                 });
             }
+
             res.status(200).json({
                 message: "Subject details retrieved successfully",
                 data: result
@@ -41,12 +49,17 @@ const getSubjectsDetails= (req, res) => {
         }
     );
 };
-const updateSubject= (req, res) => {
-    const {student_id, old_subject_name, subject_code,subject_name} = req.body;
+
+const updateSubject = (req, res) => {
+    const {old_subject_name, subject_code, subject_name} = req.body;
+    const student_id = req.student_id;
+
     const sql = `UPDATE subjects
-    SET subject_name = ?, subject_code = ? WHERE student_id = ? AND subject_name = ?`;
+    SET subject_name = ?, subject_code = ?
+    WHERE student_id = ? AND subject_name = ?`;
+
     db.query(
-        sql, 
+        sql,
         [subject_name, subject_code, student_id, old_subject_name],
         (err, result) => {
             if (err) {
@@ -55,31 +68,39 @@ const updateSubject= (req, res) => {
                     message: "Subject Update Failed"
                 });
             }
+
             res.status(200).json({
                 message: "Subject details updated successfully"
             });
         }
     );
 };
+
 const deleteSubject = (req, res) => {
-    const { student_id,subject_name} = req.body;
-    const sql = `DELETE FROM subjects WHERE student_id=? AND subject_name=?`;
+    const {subject_name} = req.body;
+    const student_id = req.student_id;
+
+    const sql = `DELETE FROM subjects
+    WHERE student_id = ? AND subject_name = ?`;
+
     db.query(
         sql,
         [student_id, subject_name],
-        (err,result)=>{
-            if(err){
+        (err, result) => {
+            if (err) {
                 console.log(err);
                 return res.status(500).json({
-                    message: "Subject Deletion Failed"  
-                })
+                    message: "Subject Deletion Failed"
+                });
             }
+
             res.status(200).json({
                 message: "Subject deleted successfully"
-            })
+            });
         }
     );
 };
+
 module.exports = {
     registerSubject,
     getSubjectsDetails,

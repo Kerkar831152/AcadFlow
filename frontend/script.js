@@ -1,13 +1,13 @@
 const API_BASE = "http://localhost:3000/api";
+
 const authScreen = document.getElementById("auth-screen");
 const appScreen = document.getElementById("app-screen");
 
-const authChoice = document.getElementById("auth-choice");
-const existingAccountButton = document.getElementById("existing-account-btn");
-const newAccountButton = document.getElementById("new-account-btn");
-const backToChoiceButton = document.getElementById("back-to-choice-btn");
-const backToChoiceRegisterButton = document.getElementById("back-to-choice-register-btn");
 const registerForm = document.getElementById("register-form");
+const loginForm = document.getElementById("login-form");
+
+const showLoginButton = document.getElementById("show-login-btn");
+const showRegisterButton = document.getElementById("show-register-btn");
 
 let subjects = [];
 let assessments = [];
@@ -71,9 +71,8 @@ async function apiRequest(url, options = {}) {
 
     if (!response.ok) {
         const error = await response.json();
-        console.log(error);
 
-        if(response.status === 401) {
+        if (response.status === 401) {
             localStorage.removeItem("token");
         }
 
@@ -289,6 +288,11 @@ function calculateWorkload() {
         }
     }
 
+    if (savedStudyHours === 0) {
+        loadPercentage = 0;
+        return;
+    }
+
     loadPercentage = (weeklyHours / savedStudyHours) * 100;
 
     if (loadPercentage <= 70) {
@@ -330,6 +334,7 @@ function loadpercent() {
 const calculateWorkloadButton = document.getElementById("calculate-workload");
 
 calculateWorkloadButton.addEventListener("click", function() {
+    calculateWorkload();
     loadpercent();
 });
 
@@ -607,27 +612,15 @@ async function displaystudentdata() {
     document.getElementById("nav-student-name").textContent = student.name;
 }
 
-existingAccountButton.addEventListener("click", function() {
-    authChoice.classList.add("hidden");
+showLoginButton.addEventListener("click", function() {
+    registerForm.classList.add("hidden");
     loginForm.classList.remove("hidden");
 });
 
-newAccountButton.addEventListener("click", function() {
-    authChoice.classList.add("hidden");
+showRegisterButton.addEventListener("click", function() {
+    loginForm.classList.add("hidden");
     registerForm.classList.remove("hidden");
 });
-
-backToChoiceButton.addEventListener("click", function() {
-    loginForm.classList.add("hidden");
-    authChoice.classList.remove("hidden");
-});
-
-backToChoiceRegisterButton.addEventListener("click", function() {
-    registerForm.classList.add("hidden");
-    authChoice.classList.remove("hidden");
-});
-
-const loginForm = document.getElementById("login-form");
 
 loginForm.addEventListener("submit", async function(event) {
     event.preventDefault();
@@ -645,8 +638,6 @@ loginForm.addEventListener("submit", async function(event) {
         });
 
         localStorage.setItem("token", data.token);
-
-        alert("Login successful");
 
         authScreen.classList.add("hidden");
         appScreen.classList.remove("hidden");
@@ -685,27 +676,24 @@ registerForm.addEventListener("submit", async function(event) {
 
         alert("Account created successfully. Please login.");
 
+        const registeredEmail = email.value;
+
         registerForm.reset();
 
         registerForm.classList.add("hidden");
-        authChoice.classList.add("hidden");
         loginForm.classList.remove("hidden");
 
-        document.getElementById("login-email").value =
-            email.value;
+        document.getElementById("login-email").value = registeredEmail;
     }
     catch(error) {
         alert(error.message);
     }
 });
 
-const logoutButton =
-    document.getElementById("logout-btn");
+const logoutButton = document.getElementById("logout-btn");
 
 logoutButton.addEventListener("click", function() {
-
-    const confirmLogout =
-        confirm("Are you sure you want to sign out?");
+    const confirmLogout = confirm("Are you sure you want to sign out?");
 
     if(!confirmLogout) {
         return;
@@ -716,14 +704,11 @@ logoutButton.addEventListener("click", function() {
     authScreen.classList.remove("hidden");
     appScreen.classList.add("hidden");
 
-    authChoice.classList.remove("hidden");
+    registerForm.classList.remove("hidden");
     loginForm.classList.add("hidden");
-    registerForm.classList.add("hidden");
 
     loginForm.reset();
     registerForm.reset();
-
-    alert("Signed out successfully");
 });
 
 async function startApp() {
@@ -733,6 +718,7 @@ async function startApp() {
     await loadCalendarEvents();
     await loadAvailability();
     calculateWorkload();
+    loadpercent();
 }
 
 const token = localStorage.getItem("token");
@@ -749,16 +735,14 @@ if(token) {
         authScreen.classList.remove("hidden");
         appScreen.classList.add("hidden");
 
-        authChoice.classList.remove("hidden");
+        registerForm.classList.remove("hidden");
         loginForm.classList.add("hidden");
-        registerForm.classList.add("hidden");
     });
 }
 else {
     authScreen.classList.remove("hidden");
     appScreen.classList.add("hidden");
 
-    authChoice.classList.remove("hidden");
+    registerForm.classList.remove("hidden");
     loginForm.classList.add("hidden");
-    registerForm.classList.add("hidden");
 }

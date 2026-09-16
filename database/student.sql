@@ -1,5 +1,3 @@
-CREATE DATABASE student;
-USE student;
 CREATE TABLE student_data
 ( id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,

@@ -1,5 +1,3 @@
-CREATE DATABASE IF NOT EXISTS student;
-USE student;
 CREATE TABLE academic_calendar
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -8,5 +6,5 @@ CREATE TABLE academic_calendar
     day_type VARCHAR(30) NOT NULL,
     description VARCHAR(150),
 
-    FOREIGN KEY (student_id) REFERENCES student_data(id)
+    FOREIGN KEY (student_id) REFERENCES student_data(id) ON DELETE CASCADE
 );
